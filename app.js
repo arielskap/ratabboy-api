@@ -6,6 +6,8 @@ const logger = require('morgan');
 require('dotenv').config({
   path: '.env'
 });
+const cors = require('cors')
+const helmet = require('helmet')
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -22,6 +24,12 @@ mongoose.connect(process.env.URLDB, {
     throw error
   }
 })
+
+app.use(cors({
+  origin: true,
+  credentials: true
+}))
+app.use(helmet())
 
 app.use(logger('dev'));
 app.use(express.json());
