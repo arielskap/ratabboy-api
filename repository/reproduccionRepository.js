@@ -6,7 +6,12 @@ class ReproduccionRepository {
   }
 
   async getAll() {
-    return await this.model.find()
+    try {
+      return await this.model.find()
+    } catch (error) {
+      console.log(error.message)
+      return undefined
+    }
   }
 }
 

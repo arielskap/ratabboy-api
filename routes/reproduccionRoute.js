@@ -6,8 +6,12 @@ var modelReproduccion = require('../models/reproduccion')
 /* GET users listing. */
 router.get('/', async function(req, res, next) {
   const reproduccionesData = await repository.getAll()
-  const reproducciones = { body: reproduccionesData, type: 'success' }
-  res.status(200).json(reproducciones);
+  if (reproduccionesData) {
+    const reproducciones = { body: reproduccionesData, type: 'success' }
+    res.status(200).json(reproducciones);
+  } else {
+    res.status(504).send('error')
+  }
 });
 
 /* GET users listing. */
