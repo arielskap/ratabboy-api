@@ -8,22 +8,21 @@ require('dotenv').config({
 });
 const cors = require('cors')
 const helmet = require('helmet')
-
-const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
-const reproduccionRouter = require('./routes/reproduccionRoute');
+const router = require('./network/routes')
 
 const app = express();
+
+mongoose.Promise = global.Promise;
 
 mongoose.connect(process.env.URLDB, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useUnifiedTopology: true
-}, (error, respuesta) => {
-  if (error) {
-    throw error
-  }
 })
+  .then(() => console.log('[db] Conectada con éxito'))
+  .catch(err => console.error('[db]', err));
+
+router(app);
 
 app.use(cors({
   origin: true,
@@ -35,9 +34,5 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/reproduccion', reproduccionRouter);
 
 module.exports = app;
